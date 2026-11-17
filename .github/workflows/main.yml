@@ -1,0 +1,74 @@
+name: PRIME VIBE APK Build
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get project files
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Prepare Android project
+        run: |
+          mkdir -p app/src/main/assets
+          mkdir -p app/src/main/java/com/primevibe/app
+          mkdir -p app/src/main/res/values
+          mkdir -p app/src/main/res/drawable
+
+          cp AndroidManifest.xml app/src/main/AndroidManifest.xml
+          cp MainActivity.kt app/src/main/java/com/primevibe/app/MainActivity.kt
+          cp index.html app/src/main/assets/index.html
+          cp styles.xml app/src/main/res/values/styles.xml
+          cp ic_launcher.xml app/src/main/res/drawable/ic_launcher.xml
+
+          cat > app/build.gradle <<'EOF'
+          plugins {
+              id 'com.android.application'
+              id 'org.jetbrains.kotlin.android'
+          }
+
+          android {
+              namespace 'com.primevibe.app'
+              compileSdk 35
+
+              defaultConfig {
+                  applicationId 'com.primevibe.app'
+                  minSdk 23
+                  targetSdk 35
+                  versionCode 1
+                  versionName '1.0'
+              }
+          }
+
+          dependencies {
+              implementation 'androidx.core:core-ktx:1.15.0'
+              implementation 'androidx.appcompat:appcompat:1.7.0'
+              implementation 'androidx.activity:activity-ktx:1.10.0'
+          }
+          EOF
+
+      - name: Build APK
+        run: |
+          gradle --version
+          gradle assembleDebug
+
+      - name: Save APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: PRIME-VIBE-APK
+          path: app/build/outputs/apk/debug/app-debug.apk
