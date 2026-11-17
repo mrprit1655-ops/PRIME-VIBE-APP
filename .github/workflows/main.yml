@@ -1,3 +1,4 @@
+
 name: PRIME VIBE APK Build
 
 on:
@@ -20,7 +21,7 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-            - name: Setup Android SDK
+      - name: Setup Android SDK
         uses: android-actions/setup-android@v3
         with:
           packages: |
@@ -40,6 +41,32 @@ jobs:
           cp index.html app/src/main/assets/index.html
           cp styles.xml app/src/main/res/values/styles.xml
           cp ic_launcher.xml app/src/main/res/drawable/ic_launcher.xml
+
+          cat > settings.gradle <<'EOF'
+          pluginManagement {
+              repositories {
+                  google()
+                  mavenCentral()
+                  gradlePluginPortal()
+              }
+          }
+          dependencyResolutionManagement {
+              repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+              repositories {
+                  google()
+                  mavenCentral()
+              }
+          }
+          rootProject.name = "PRIME-VIBE"
+          include ':app'
+          EOF
+
+          cat > build.gradle <<'EOF'
+          plugins {
+              id 'com.android.application' version '8.7.3' apply false
+              id 'org.jetbrains.kotlin.android' version '2.0.21' apply false
+          }
+          EOF
 
           cat > app/build.gradle <<'EOF'
           plugins {
