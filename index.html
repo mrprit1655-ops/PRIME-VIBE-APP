@@ -4,26 +4,25 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>PRIME VIBE | Luxury Grooming & Store</title>
 <style>
-:root{--bg:#090909;--panel:#151515;--panel2:#1d1d1d;--gold:#d8b45a;--muted:#aaa;--line:#34302a;--white:#f6f2e8}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--white);font:15px/1.5 system-ui,Arial,sans-serif}
-header{position:sticky;top:0;z-index:5;background:#090909ed;border-bottom:1px solid var(--line);padding:14px 5%;display:flex;align-items:center;justify-content:space-between;gap:12px}
-.brand{font-size:22px;font-weight:900;letter-spacing:3px;color:var(--gold)}.brand small{display:block;font-size:9px;letter-spacing:2px;color:#ddd;font-weight:500}
-nav{display:flex;gap:8px;flex-wrap:wrap}button,.btn{border:1px solid var(--gold);background:var(--gold);color:#111;padding:10px 14px;border-radius:9px;font-weight:700;cursor:pointer}
-button.secondary{background:transparent;color:var(--gold)}button:disabled{opacity:.45;cursor:not-allowed}
+:root{--bg:#090909;--panel:#151515;--gold:#d8b45a;--muted:#aaa;--line:#34302a;--white:#f6f2e8}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--white);font:16px/1.5 system-ui,Arial,sans-serif}
+header{position:sticky;top:0;z-index:5;background:#090909ed;border-bottom:1px solid var(--line);padding:14px 5%;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.brand{font-size:25px;font-weight:900;letter-spacing:3px;color:var(--gold)}.brand small{display:block;font-size:10px;letter-spacing:2px;color:#ddd;font-weight:500}
+nav{display:flex;gap:8px;flex-wrap:wrap}button{border:1px solid var(--gold);background:var(--gold);color:#111;padding:12px 16px;border-radius:10px;font-weight:700;cursor:pointer}button.secondary{background:transparent;color:var(--gold)}
 main{max-width:1120px;margin:auto;padding:24px 5% 70px}.hero{padding:38px 25px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(120deg,#1b1811,#090909 70%);margin-bottom:24px}
-.eyebrow{color:var(--gold);letter-spacing:3px;font-size:11px;font-weight:800}.hero h1{font-size:clamp(32px,6vw,56px);line-height:1.05;margin:12px 0}.hero p{color:#c5c0b5;max-width:620px}
-h2{font-size:25px;margin:26px 0 14px}.muted{color:var(--muted)}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
-.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px}.card h3{margin:5px 0}.price{color:var(--gold);font-weight:800;font-size:18px}
-input,select,textarea{width:100%;padding:11px;background:#0e0e0e;color:white;border:1px solid #45413a;border-radius:8px;margin:5px 0 12px}
-label{font-size:13px;color:#d4cdbd}.row{display:flex;gap:12px;flex-wrap:wrap}.row>*{flex:1;min-width:150px}
-.pill{display:inline-block;border:1px solid var(--line);border-radius:99px;padding:4px 9px;color:var(--gold);font-size:12px}
-.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}.tabs button{background:#181818;color:var(--gold)}.tabs button.active{background:var(--gold);color:#111}
-.hidden{display:none!important}.product-img{height:125px;border-radius:10px;background:linear-gradient(135deg,#302817,#111);display:grid;place-items:center;color:var(--gold);font-size:35px;margin-bottom:10px}
-.notice{padding:12px;border:1px solid #5c4b25;border-radius:10px;color:#e9d7a6;background:#211b0e;margin:12px 0;font-size:13px}
-table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:10px;border-bottom:1px solid var(--line);text-align:left}
+.eyebrow{color:var(--gold);letter-spacing:3px;font-size:12px;font-weight:800}.hero h1{font-size:clamp(32px,6vw,56px);line-height:1.05;margin:12px 0}.hero p,.muted{color:var(--muted)}
+h2{font-size:27px;margin:26px 0 14px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px}
+.card h3{margin:5px 0}.price{color:var(--gold);font-weight:800;font-size:20px}
+input,select,textarea{width:100%;padding:13px;background:#0e0e0e;color:white;border:1px solid #45413a;border-radius:9px;margin:6px 0 14px;font:inherit}
+label{font-size:14px;color:#d4cdbd}.row{display:flex;gap:12px;flex-wrap:wrap}.row>*{flex:1;min-width:150px}
+.pill{display:inline-block;border:1px solid var(--line);border-radius:99px;padding:5px 10px;color:var(--gold);font-size:13px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}.hidden{display:none!important}
+.notice{padding:13px;border:1px solid #5c4b25;border-radius:10px;color:#e9d7a6;background:#211b0e;margin:12px 0;font-size:14px}
+.product-img{height:125px;border-radius:10px;background:linear-gradient(135deg,#302817,#111);display:grid;place-items:center;color:var(--gold);font-size:35px;margin-bottom:10px}
 footer{text-align:center;color:#777;padding:25px;border-top:1px solid var(--line)}
 @media(max-width:600px){header{align-items:flex-start;flex-direction:column}.hero{padding:26px 18px}main{padding-top:16px}}
-</style></head>
+</style>
+</head>
 <body>
 <header><div class="brand">PRIME VIBE<small>LUXURY GROOMING STUDIO</small></div>
 <nav><button class="secondary" onclick="show('home')">Home</button><button class="secondary" onclick="show('booking')">Book Salon</button><button class="secondary" onclick="show('store')">Product Store</button><button onclick="show('admin')">Admin Demo</button></nav></header>
@@ -31,42 +30,80 @@ footer{text-align:center;color:#777;padding:25px;border-top:1px solid var(--line
 <section id="home">
 <div class="hero"><div class="eyebrow">LOOK GOOD • FEEL GREAT</div><h1>Style that speaks.<br><span style="color:var(--gold)">Confidence that lasts.</span></h1><p>Salon appointments aur online shopping — sab ek hi jagah. PRIME VIBE, Chhoti Sadri.</p><div class="row"><button onclick="show('booking')">Book Appointment</button><button class="secondary" onclick="show('store')">Explore Store</button></div></div>
 <div class="grid"><div class="card"><span class="pill">SALON</span><h3>Grooming & Styling</h3><p class="muted">Haircut, beard, facial, spa aur makeup services.</p></div><div class="card"><span class="pill">STORE</span><h3>Shop Anything</h3><p class="muted">Aap apni pasand ke kisi bhi category ke products list kar sakte hain.</p></div><div class="card"><span class="pill">DELIVERY</span><h3>All India Shipping</h3><p class="muted">Courier ya self-shipping, dono ka option.</p></div></div></section>
-
 <section id="booking" class="hidden"><h2>Book a Salon Appointment</h2><p class="muted">Service aur preferred time select karein.</p><div class="card"><div class="row"><div><label>Your name</label><input id="cname" placeholder="Full name"></div><div><label>Mobile number</label><input id="cmobile" placeholder="10-digit mobile" maxlength="10"></div></div><div class="row"><div><label>Service</label><select id="service"></select></div><div><label>Appointment date</label><input id="bdate" type="date"></div><div><label>Preferred time</label><input id="btime" type="time"></div></div><button onclick="book()">Request Appointment</button><div id="bookingMsg" class="notice hidden"></div></div></section>
-
-<section id="store" class="hidden"><h2>Product Store</h2><p class="muted">UPI aur Cash on Delivery • All India Delivery</p><div id="products" class="grid"></div><h2>Your Cart <span class="pill" id="cartCount">0 items</span></h2><div class="card"><div id="cartItems" class="muted">Cart is empty.</div><div class="price" id="cartTotal">Total: ₹0</div><h3>Delivery Details</h3><div class="row"><div><label>Name</label><input id="buyer" placeholder="Full name"></div><div><label>Mobile</label><input id="phone" placeholder="10-digit mobile" maxlength="10"></div></div><label>Full delivery address</label><textarea id="address" rows="2" placeholder="House, street, city, state, PIN code"></textarea><div class="row"><div><label>Payment method</label><select id="payment"><option>UPI</option><option>Cash on Delivery</option></select></div><div><label>Delivery method</label><select id="shipping"><option>Courier</option><option>Self Shipping</option></select></div></div><button onclick="placeOrder()">Place Demo Order</button><div id="orderMsg" class="notice hidden"></div></div></section>
-
-<section id="admin" class="hidden"><h2>Owner Admin Panel <span class="pill">DEMO ONLY</span></h2><div class="notice">Demo panel hai: abhi login security, cloud database, real OTP, payment gateway aur WhatsApp alerts connected nahi hain. Public launch se pehle secure backend zaroori hai.</div>
-<div class="tabs"><button id="tabServices" class="active" onclick="adminTab('services')">Services</button><button id="tabProducts" onclick="adminTab('products')">Products</button><button id="tabOrders" onclick="adminTab('orders')">Orders</button><button id="tabBookings" onclick="adminTab('bookings')">Bookings</button></div>
+<section id="store" class="hidden"><h2>Product Store</h2><p class="muted">UPI aur Cash on Delivery • All India Delivery</p><div id="products" class="grid"></div><h2>Your Cart <span class="pill" id="cartCount">0 items</span></h2><div class="card"><div id="cartItems" class="muted">Cart is empty.</div><div class="price" id="cartTotal">Total: ₹0</div><h3>Delivery Details</h3><div class="row"><div><label>Name</label><input id="buyer" placeholder="Full name"></div><div><label>Mobile</label><input id="phone" placeholder="10-digit mobile" maxlength="10"></div></div><label>Full delivery address</label><textarea id="address" rows="2" placeholder="House, street, city, state, PIN code"></textarea><div class="row"><div><label>Payment method</label><select id="payment"><option>UPI</option><option>Cash on Delivery</option></select></div><div><label>Delivery method</label><select id="shipping"><option>Courier</option><option>Self Shipping</option></select></div></div><button onclick="placeOrder()">Place Order</button><div id="orderMsg" class="notice hidden"></div></div></section>
+<section id="admin" class="hidden"><h2>Owner Admin Panel <span class="pill">DEMO ONLY</span></h2><div class="notice">Abhi admin login aur cloud-based admin management setup nahi hai. Is panel mein kiye gaye changes sirf is browser ke demo data mein rahenge.</div>
+<div class="tabs"><button id="tabServices" onclick="adminTab('services')">Services</button><button id="tabProducts" onclick="adminTab('products')">Products</button><button id="tabOrders" onclick="adminTab('orders')">Orders</button><button id="tabBookings" onclick="adminTab('bookings')">Bookings</button></div>
 <div id="adminServices"><div class="card"><h3>Add salon service</h3><div class="row"><input id="newService" placeholder="Service name"><input id="newServicePrice" type="number" placeholder="Price ₹"></div><button onclick="addService()">Add Service</button><div id="serviceList"></div></div></div>
-<div id="adminProducts" class="hidden"><div class="card"><h3>Add any product</h3><div class="row"><input id="pname" placeholder="Product name"><input id="pcat" placeholder="Category"><input id="pprice" type="number" placeholder="Price ₹"><input id="pstock" type="number" placeholder="Stock qty"></div><label>Product photo</label><input id="pimage" type="file" accept="image/*"><label>Description</label><textarea id="pdesc" rows="2" placeholder="Product details"></textarea><button onclick="addProduct()">Add Product</button></div><div id="adminProductList" class="grid" style="margin-top:14px"></div></div>
-<div id="adminOrders" class="hidden card"><h3>Customer Orders</h3><div id="ordersList" class="muted">No orders yet.</div></div>
-<div id="adminBookings" class="hidden card"><h3>Appointment Requests</h3><div id="bookingsList" class="muted">No bookings yet.</div></div>
-</section>
+<div id="adminProducts" class="hidden"><div class="card"><h3>Add any product</h3><div class="row"><input id="pname" placeholder="Product name"><input id="pcat" placeholder="Category"><input id="pprice" type="number" placeholder="Price ₹"><input id="pstock" type="number" placeholder="Stock qty"></div><label>Product photo</label><input id="pimage" type="file" accept="image/*"><label>Description</label><textarea id="pdesc" rows="2" placeholder="Product details"></textarea><button onclick="addProduct()">Add Product</button></div><div id="adminProductList" class="grid"></div></div>
+<div id="adminOrders" class="hidden card"><h3>Customer Orders (this device demo)</h3><div id="ordersList" class="muted">No orders yet.</div></div><div id="adminBookings" class="hidden card"><h3>Appointment Requests (this device demo)</h3><div id="bookingsList" class="muted">No bookings yet.</div></div></section>
 </main><footer>PRIME VIBE • LOOK GOOD • FEEL GREAT • Chhoti Sadri, Rajasthan</footer>
+
+<!-- Firebase Web SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
 <script>
+const firebaseConfig = {
+  apiKey: "AIzaSyCELnbDbmhbzXzGeddpTgphhHIcnXw4F38",
+  authDomain: "prime-vibe-592ad.firebaseapp.com",
+  projectId: "prime-vibe-592ad",
+  storageBucket: "prime-vibe-592ad.firebasestorage.app",
+  messagingSenderId: "64642254870",
+  appId: "1:64642254870:web:6a464f66fada5ecd3e0d37"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
 const initialServices=[["Men's Haircut",150],["Ladies Haircut",300],["Hair Styling",250],["Beard Styling",100],["Facial",500],["Hair Spa",600],["Hair Colour",800],["Bridal Makeup",3000]];
 let services=JSON.parse(localStorage.pvServices||"null")||initialServices.map(([name,price])=>({name,price}));
 let products=JSON.parse(localStorage.pvProducts||"null")||[
 {id:1,name:"Premium Hair Wax",cat:"Grooming",price:299,stock:12,desc:"Everyday styling essential",image:""},
-{id:2,name:"Signature Perfume",cat:"Fragrance",price:799,stock:8,desc:"A bold everyday fragrance",image:""}
-];
+{id:2,name:"Signature Perfume",cat:"Fragrance",price:799,stock:8,desc:"A bold everyday fragrance",image:""}];
 let cart=[],orders=JSON.parse(localStorage.pvOrders||"[]"),bookings=JSON.parse(localStorage.pvBookings||"[]");
 function save(){localStorage.pvServices=JSON.stringify(services);localStorage.pvProducts=JSON.stringify(products);localStorage.pvOrders=JSON.stringify(orders);localStorage.pvBookings=JSON.stringify(bookings)}
 function show(id){["home","booking","store","admin"].forEach(x=>document.getElementById(x).classList.toggle("hidden",x!==id));render()}
 function money(n){return "₹"+Number(n).toLocaleString("en-IN")}
-function render(){document.getElementById("service").innerHTML=services.map((s,i)=>`<option value="${i}">${s.name} — ${money(s.price)}</option>`).join("");document.getElementById("products").innerHTML=products.map(p=>`<div class="card"><div class="product-img">${p.image?`<img src="${p.image}" style="width:100%;height:125px;object-fit:cover;border-radius:10px">`:"✦"}</div><span class="pill">${p.cat||"Product"}</span><h3>${esc(p.name)}</h3><p class="muted">${esc(p.desc||"")}</p><div class="price">${money(p.price)}</div><p class="muted">${p.stock>0?p.stock+" in stock":"Out of stock"}</p><button ${p.stock<1?"disabled":""} onclick="addCart(${p.id})">Add to Cart</button></div>`).join("")||"No products listed yet.";document.getElementById("cartCount").textContent=cart.length+" items";document.getElementById("cartItems").innerHTML=cart.length?cart.map((x,i)=>`${esc(x.name)} × ${x.qty} — ${money(x.price*x.qty)} <button class="secondary" onclick="removeCart(${i})">Remove</button>`).join("<br>"):"Cart is empty.";document.getElementById("cartTotal").textContent="Total: "+money(cart.reduce((a,x)=>a+x.price*x.qty,0));document.getElementById("serviceList").innerHTML=services.map((s,i)=>`<p>${esc(s.name)} — ${money(s.price)} <button class="secondary" onclick="deleteService(${i})">Remove</button></p>`).join("");document.getElementById("adminProductList").innerHTML=products.map(p=>`<div class="card"><b>${esc(p.name)}</b><p>${money(p.price)} • Stock: ${p.stock}</p><button class="secondary" onclick="changeStock(${p.id})">Update Stock</button><button class="secondary" onclick="deleteProduct(${p.id})">Delete</button></div>`).join("");document.getElementById("ordersList").innerHTML=orders.length?orders.map(o=>`<p><b>${o.id}</b> — ${esc(o.name)} — ${money(o.total)} — ${o.payment} — ${o.status}<br><small>${esc(o.address)}</small> <button class="secondary" onclick="updateOrder('${o.id}')">Update status</button></p>`).join(""):"No orders yet.";document.getElementById("bookingsList").innerHTML=bookings.length?bookings.map(b=>`<p>${esc(b.name)} — ${esc(b.service)} — ${b.date} ${b.time} — ${b.status}</p>`).join(""):"No bookings yet."}
 function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function render(){
+document.getElementById("service").innerHTML=services.map((s,i)=>`<option value="${i}">${esc(s.name)} — ${money(s.price)}</option>`).join("");
+document.getElementById("products").innerHTML=products.map(p=>`<div class="card"><div class="product-img">${p.image?`<img src="${p.image}" style="width:100%;height:125px;object-fit:cover;border-radius:10px">`:"✦"}</div><span class="pill">${esc(p.cat||"Product")}</span><h3>${esc(p.name)}</h3><p class="muted">${esc(p.desc||"")}</p><div class="price">${money(p.price)}</div><p class="muted">${p.stock>0?p.stock+" in stock":"Out of stock"}</p><button ${p.stock<1?"disabled":""} onclick="addCart(${p.id})">Add to Cart</button></div>`).join("")||"No products listed yet.";
+document.getElementById("cartCount").textContent=cart.length+" items";document.getElementById("cartItems").innerHTML=cart.length?cart.map((x,i)=>`${esc(x.name)} × ${x.qty} — ${money(x.price*x.qty)} <button class="secondary" onclick="removeCart(${i})">Remove</button>`).join("<br>"):"Cart is empty.";
+document.getElementById("cartTotal").textContent="Total: "+money(cart.reduce((a,x)=>a+x.price*x.qty,0));
+document.getElementById("serviceList").innerHTML=services.map((s,i)=>`<p>${esc(s.name)} — ${money(s.price)} <button class="secondary" onclick="deleteService(${i})">Remove</button></p>`).join("");
+document.getElementById("adminProductList").innerHTML=products.map(p=>`<div class="card"><b>${esc(p.name)}</b><p>${money(p.price)} • Stock: ${p.stock}</p><button class="secondary" onclick="changeStock(${p.id})">Update Stock</button><button class="secondary" onclick="deleteProduct(${p.id})">Delete</button></div>`).join("");
+document.getElementById("ordersList").innerHTML=orders.length?orders.map(o=>`<p><b>${esc(o.id)}</b> — ${esc(o.name)} — ${money(o.total)} — ${esc(o.payment)} — ${esc(o.status)}<br>${esc(o.address)}</p>`).join(""):"No orders yet.";
+document.getElementById("bookingsList").innerHTML=bookings.length?bookings.map(b=>`<p>${esc(b.name)} — ${esc(b.service)} — ${b.date} ${b.time} — ${esc(b.status)}</p>`).join(""):"No bookings yet.";
+}
 function addCart(id){let p=products.find(x=>x.id===id);if(!p||p.stock<1)return;let c=cart.find(x=>x.id===id);if(c)c.qty++;else cart.push({...p,qty:1});render()}
 function removeCart(i){cart.splice(i,1);render()}
-function placeOrder(){let name=buyer.value.trim(),mobile=phone.value.trim(),addr=address.value.trim();if(!cart.length||!name||!/^[0-9]{10}$/.test(mobile)||!addr){alert("Cart, name, valid 10-digit mobile aur address bharna zaroori hai.");return}for(let c of cart){let p=products.find(x=>x.id===c.id);if(!p||p.stock<c.qty){alert(c.name+" ka stock available nahi hai.");return}}let total=cart.reduce((a,x)=>a+x.price*x.qty,0);cart.forEach(c=>products.find(p=>p.id===c.id).stock-=c.qty);let o={id:"PV"+Date.now().toString().slice(-7),name,mobile,address:addr,payment:payment.value,shipping:shipping.value,total,items:cart.map(x=>({name:x.name,qty:x.qty,price:x.price})),status:"Received (Demo)"};orders.unshift(o);cart=[];save();render();orderMsg.classList.remove("hidden");orderMsg.textContent="Demo order created: "+o.id+". Real payment/dispatch abhi connected nahi hai."}
-function book(){let name=cname.value.trim(),mobile=cmobile.value.trim(),date=bdate.value,time=btime.value;if(!name||!/^[0-9]{10}$/.test(mobile)||!date||!time){alert("Please fill all details and valid mobile number.");return}let s=services[Number(service.value)];bookings.unshift({name,mobile,service:s.name,price:s.price,date,time,status:"Requested"});save();bookingMsg.classList.remove("hidden");bookingMsg.textContent="Appointment request saved in this demo. Salon will confirm after backend setup."}
-function addService(){let n=newService.value.trim(),p=Number(newServicePrice.value);if(!n||p<0)return;services.push({name:n,price:p});newService.value="";newServicePrice.value="";save();render()}
+async function placeOrder(){
+let name=document.getElementById("buyer").value.trim(),mobile=document.getElementById("phone").value.trim(),addr=document.getElementById("address").value.trim();
+if(!cart.length||!name||!/^[0-9]{10}$/.test(mobile)||!addr){alert("Cart, name, valid 10-digit mobile aur address bharna zaroori hai.");return}
+for(let c of cart){let p=products.find(x=>x.id===c.id);if(!p||p.stock<c.qty){alert(c.name+" ka stock available nahi hai.");return}}
+let total=cart.reduce((a,x)=>a+x.price*x.qty,0),id="PV"+Date.now().toString().slice(-7);
+let o={orderId:id,customerName:name,phone:mobile,address:addr,paymentMethod:document.getElementById("payment").value,deliveryMethod:document.getElementById("shipping").value,total,items:cart.map(x=>({name:x.name,qty:x.qty,price:x.price})),status:"pending",createdAt:firebase.firestore.FieldValue.serverTimestamp()};
+try{
+await db.collection("orders").add(o);
+cart.forEach(c=>products.find(p=>p.id===c.id).stock-=c.qty);
+orders.unshift({id,name,mobile,address:addr,payment:o.paymentMethod,shipping:o.deliveryMethod,total,status:"Saved to Firebase"});
+cart=[];save();render();let m=document.getElementById("orderMsg");m.classList.remove("hidden");m.textContent="Order request Firebase mein save ho gayi. Order ID: "+id+". Payment aur courier dispatch abhi alag se connect karne hain.";
+}catch(e){console.error(e);alert("Order Firebase mein save nahi hua. Firestore Rules check karne honge. Error: "+e.message)}
+}
+async function book(){
+let name=document.getElementById("cname").value.trim(),mobile=document.getElementById("cmobile").value.trim(),date=document.getElementById("bdate").value,time=document.getElementById("btime").value;
+if(!name||!/^[0-9]{10}$/.test(mobile)||!date||!time){alert("Please fill all details and valid mobile number.");return}
+let s=services[Number(document.getElementById("service").value)];
+let booking={customerName:name,phone:mobile,serviceName:s.name,price:Number(s.price),date,time,status:"pending",createdAt:firebase.firestore.FieldValue.serverTimestamp()};
+try{
+await db.collection("appointments").add(booking);
+bookings.unshift({name,mobile,service:s.name,price:s.price,date,time,status:"Saved to Firebase"});save();
+let m=document.getElementById("bookingMsg");m.classList.remove("hidden");m.textContent="Appointment request Firebase mein save ho gayi. Salon aapse confirm karega.";
+}catch(e){console.error(e);alert("Booking Firebase mein save nahi hui. Firestore Rules check karne honge. Error: "+e.message)}
+}
+function addService(){let n=newService.value.trim(),p=Number(newServicePrice.value);if(!n||p<=0)return;services.push({name:n,price:p});newService.value="";newServicePrice.value="";save();render()}
 function deleteService(i){services.splice(i,1);save();render()}
 function addProduct(){let n=pname.value.trim(),price=Number(pprice.value),stock=Number(pstock.value);if(!n||price<=0||stock<0){alert("Product name, valid price aur stock bharein.");return}let file=pimage.files[0],reader=new FileReader();reader.onload=()=>{products.unshift({id:Date.now(),name:n,cat:pcat.value,price,stock,desc:pdesc.value,image:reader.result||""});save();render();pname.value=pcat.value=pprice.value=pstock.value=pdesc.value="";pimage.value=""};if(file)reader.readAsDataURL(file);else reader.onload()}
 function deleteProduct(id){products=products.filter(p=>p.id!==id);save();render()}
 function changeStock(id){let p=products.find(x=>x.id===id),v=prompt("New stock quantity:",p.stock);if(v!==null&&Number(v)>=0){p.stock=Number(v);save();render()}}
-function updateOrder(id){let o=orders.find(x=>x.id===id),v=prompt("New status (Confirmed / Packed / Shipped / Delivered / Cancelled):",o.status);if(v){o.status=v;save();render()}}
 function adminTab(t){["services","products","orders","bookings"].forEach(x=>{document.getElementById("admin"+x[0].toUpperCase()+x.slice(1)).classList.toggle("hidden",x!==t);document.getElementById("tab"+x[0].toUpperCase()+x.slice(1)).classList.toggle("active",x===t)})}
 render();
 </script></body></html>
