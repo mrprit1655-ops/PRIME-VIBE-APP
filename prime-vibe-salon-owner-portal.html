@@ -45,6 +45,18 @@ button.alt{background:transparent;border:1px solid var(--gold);color:var(--gold)
 <button class="alt" onclick="logout()">Logout</button><h2 id="accountTitle">Account</h2>
 <div id="status" class="note"></div>
 <div id="ownerPanel" class="hidden"><h2>Pending applications</h2><div id="apps">Loading…</div></div>
+<div id="salonDashboard" class="hidden">
+  <div class="card">
+    <h2>Salon Profile</h2>
+    <h3 id="profileSalonName">Salon Name</h3>
+    <p id="profileOwnerName">Owner Name</p>
+    <p id="profileBio">Salon Bio</p>
+    <p id="profileAddress">Salon Address</p>
+    <p>Followers: <span id="profileFollowers">0</span></p>
+    <p>Rating: <span id="profileRating">0</span> ⭐</p>
+    <p>Reviews: <span id="profileReviews">0</span></p>
+  </div>
+</div>
 </div>
 </main>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
