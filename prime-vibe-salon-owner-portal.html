@@ -83,7 +83,14 @@ firebase.initializeApp(firebaseConfig);
 const db=firebase.firestore(),auth=firebase.auth();
 const SUPER_OWNER_UID="n8IqhJKiuieyis4xHqho5k5y0KS2";
 function el(id){return document.getElementById(id)}
-function say(t){el("msg").textContent=t;el("msg").classList.remove("hidden")}
+function say(t){
+ if(!el("account").classList.contains("hidden")){
+  el("status").textContent=t;
+ }else{
+  el("msg").textContent=t;
+  el("msg").classList.remove("hidden");
+ }
+}
 function tab(t){el("register").classList.toggle("hidden",t!=="register");el("login").classList.toggle("hidden",t!=="login");el("msg").classList.add("hidden")}
 async function register(){
  const salonName=el("salonName").value.trim(),ownerName=el("ownerName").value.trim(),phone=el("phone").value.trim(),city=el("city").value.trim(),address=el("address").value.trim(),email=el("regEmail").value.trim(),password=el("regPassword").value;
