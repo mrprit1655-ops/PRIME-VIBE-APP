@@ -107,6 +107,17 @@ async function showAccount(user){
  try{const d=await db.collection("salonApplications").doc(user.uid).get();
   if(!d.exists){el("status").textContent="Application record nahi mila.";return}
   const a=d.data();el("status").textContent="Salon: "+a.salonName+" | Status: "+String(a.status).toUpperCase()+". Approval se pehle salon public nahi hoga.";
+ if(a.status==="approved"){
+ const sDoc=await db.collection("salons").doc(user.uid).get();
+ if(sDoc.exists){
+  const s=sDoc.data();
+  el("profileSalonName").textContent=s.salonName||a.salonName;
+  el("profileOwnerName").textContent="Owner: "+(a.ownerName||"");
+  el("profileAddress").textContent=s.address||a.address||"";
+  el("profileBio").textContent=s.bio||"Salon Bio";
+  el("salonDashboard").classList.remove("hidden");
+ }
+}
  }catch(e){el("status").textContent="Status load nahi hua: "+e.message}
 }
 async function loadApps(){
