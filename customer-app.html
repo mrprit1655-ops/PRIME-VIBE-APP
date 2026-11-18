@@ -63,13 +63,19 @@ el("message").textContent=list.length?list.length+" approved salon(s) mile.":"Is
 function openSalon(id){
   const s=allSalons.find(x=>x.id===id);
   if(!s)return;
+
   el("salonProfile").style.display="block";
   el("salonProfile").innerHTML=
-    '<button class="secondary" onclick="el(\'salonProfile\').style.display=\'none\'">← Back</button>'+
+    '<button class="secondary" onclick="document.getElementById(\'salonProfile\').style.display=\'none\'">← Back</button>'+
     '<h2>'+safe(s.salonName||"Salon")+'</h2>'+
     '<p>'+safe(s.city||"")+'</p>'+
-    '<p>'+safe(s.address||"Address not provided")+'</p>'+
-    '<p>Mobile: '+safe(s.phone||"Not provided")+'</p>';
+    '<p>'+safe(s.bio||"Salon details not available")+'</p>'+
+    '<p>Address: '+safe(s.address||"Not provided")+'</p>'+
+    '<p>Mobile: '+safe(s.phone||"Not provided")+'</p>'+
+    '<p>Followers: '+Number(s.followers||0)+'</p>'+
+    '<p>Rating: '+Number(s.rating||0)+' ⭐</p>'+
+    '<p>Reviews: '+Number(s.reviewCount||0)+'</p>';
+
   el("salonProfile").scrollIntoView({behavior:"smooth"});
 }
   async function loadSalons(){
