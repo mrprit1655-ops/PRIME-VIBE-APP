@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PRIME VIBE | Customer App</title>
+<style>
+:root{--bg:#090909;--panel:#171717;--gold:#d8b45a;--line:#39342a;--muted:#aaa}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#f7f3e9;font:16px/1.5 system-ui,Arial}
+header{padding:18px 5%;border-bottom:1px solid var(--line);background:#090909}
+.brand{font-size:25px;font-weight:900;letter-spacing:3px;color:var(--gold)}
+main{max-width:950px;margin:auto;padding:22px 5% 60px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px;margin:14px 0}
+h1,h2{color:var(--gold)}.muted{color:var(--muted)}
+input{width:100%;padding:14px;background:#090909;color:white;border:1px solid #514a3b;border-radius:9px;font:inherit;margin:8px 0 14px}
+button{padding:12px 16px;background:var(--gold);color:#111;border:0;border-radius:9px;font-weight:800}
+.secondary{background:transparent;border:1px solid var(--gold);color:var(--gold)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+.salon{background:#111;border:1px solid var(--line);border-radius:14px;padding:17px}
+.notice{padding:13px;border:1px solid #69552b;border-radius:9px;background:#211b0d;color:#f0dca8;margin:12px 0}
+.pill{color:var(--gold);border:1px solid var(--line);border-radius:99px;padding:4px 10px;font-size:12px}
+a{color:var(--gold)}
+</style>
+</head>
+<body>
+<header><div class="brand">PRIME VIBE</div><small>SALON DISCOVERY</small></header>
+<main>
+<section class="card"><h1>Find your perfect salon.</h1>
+<p class="muted">Apne area ke approved salons dekhein.</p></section>
+<section class="card"><h2>Salons near you</h2>
+<label>City / Area</label>
+<input id="city" placeholder="Jaise: Chhoti Sadri, Pratapgarh">
+<button onclick="loadSalons()">Search salons</button>
+<button class="secondary" onclick="clearFilter()">Show all</button>
+<div id="message" class="notice">Approved salons load ho rahe hain…</div>
+<div id="salons" class="grid"></div></section>
+<p class="muted">Salon owner hain? <a href="prime-vibe-salon-owner-portal.html">Register your salon</a></p>
+</main>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+<script>
+const firebaseConfig={
+apiKey:"AIzaSyCELnbDbmhbzXzGeddpTgphhHIcnXw4F38",
+authDomain:"prime-vibe-592ad.firebaseapp.com",
+projectId:"prime-vibe-592ad",
+storageBucket:"prime-vibe-592ad.firebasestorage.app",
+messagingSenderId:"64642254870",
+appId:"1:64642254870:web:6a464f66fada5ecd3e0d37"
+};
+firebase.initializeApp(firebaseConfig);
+const db=firebase.firestore();
+let allSalons=[];
+const el=id=>document.getElementById(id);
+function safe(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function render(){
+const q=el("city").value.trim().toLowerCase();
+const list=allSalons.filter(s=>!q||String(s.city||"").toLowerCase().includes(q)||String(s.address||"").toLowerCase().includes(q));
+el("salons").innerHTML=list.map(s=>'<article class="salon"><span class="pill">APPROVED SALON</span><h3>'+safe(s.salonName||"Salon")+'</h3><p>'+safe(s.city||"")+'</p><p>'+safe(s.address||"Address not provided")+'</p>'+(s.phone?'<p>Mobile: '+safe(s.phone)+'</p><a href="tel:'+safe(s.phone)+'">Call salon</a>':'')+'</article>').join("");
+el("message").textContent=list.length?list.length+" approved salon(s) mile.":"Is area mein abhi koi approved salon nahi mila.";
+}
+async function loadSalons(){
+el("message").textContent="Salons load ho rahe hain…";
+try{
+const snap=await db.collection("salons").where("status","==","approved").get();
+allSalons=snap.docs.map(d=>({id:d.id,...d.data()}));render();
+}catch(e){el("message").textContent="Salons load nahi hue: "+e.message+". Firestore Rules check karne honge."}
+}
+function clearFilter(){el("city").value="";render()}
+loadSalons();
+</script>
+</body>
+</html>
