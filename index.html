@@ -81,7 +81,7 @@ let name=document.getElementById("buyer").value.trim(),mobile=document.getElemen
 if(!cart.length||!name||!/^[0-9]{10}$/.test(mobile)||!addr){alert("Cart, name, valid 10-digit mobile aur address bharna zaroori hai.");return}
 for(let c of cart){let p=products.find(x=>x.id===c.id);if(!p||p.stock<c.qty){alert(c.name+" ka stock available nahi hai.");return}}
 let total=cart.reduce((a,x)=>a+x.price*x.qty,0),id="PV"+Date.now().toString().slice(-7);
-let o={orderId:id,customerName:name,phone:mobile,address:addr,paymentMethod:document.getElementById("payment").value,deliveryMethod:document.getElementById("shipping").value,total,items:cart.map(x=>({name:x.name,qty:x.qty,price:x.price})),status:"pending",createdAt:firebase.firestore.FieldValue.serverTimestamp()};
+let o={salonId:"TGfUFijM9DZnAWosb4oE3lueD8w2",orderId:id,customerName:name,phone:mobile,,address:addr,paymentMethod:document.getElementById("payment").value,deliveryMethod:document.getElementById("shipping").value,total,items:cart.map(x=>({name:x.name,qty:x.qty,price:x.price})),status:"pending",createdAt:firebase.firestore.FieldValue.serverTimestamp()};
 try{
 await db.collection("orders").add(o);
 cart.forEach(c=>products.find(p=>p.id===c.id).stock-=c.qty);
@@ -93,7 +93,7 @@ async function book(){
 let name=document.getElementById("cname").value.trim(),mobile=document.getElementById("cmobile").value.trim(),date=document.getElementById("bdate").value,time=document.getElementById("btime").value;
 if(!name||!/^[0-9]{10}$/.test(mobile)||!date||!time){alert("Please fill all details and valid mobile number.");return}
 let s=services[Number(document.getElementById("service").value)];
-let booking={customerName:name,phone:mobile,serviceName:s.name,price:Number(s.price),date,time,status:"pending",createdAt:firebase.firestore.FieldValue.serverTimestamp()};
+let booking={salonId:"TGfUFijM9DZnAWosb4oE3lueD8w2",customerName:name,phone:mobile,serviceName:s.name,price:Number(s.price),date,time,status:"pending",createdAt:firebase.firestore.FieldValue.serverTimestamp()};
 try{
 await db.collection("appointments").add(booking);
 bookings.unshift({name,mobile,service:s.name,price:s.price,date,time,status:"Saved to Firebase"});save();
