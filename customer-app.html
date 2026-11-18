@@ -57,10 +57,22 @@ function safe(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&
 function render(){
 const q=el("city").value.trim().toLowerCase();
 const list=allSalons.filter(s=>!q||String(s.city||"").toLowerCase().includes(q)||String(s.address||"").toLowerCase().includes(q));
-el("salons").innerHTML=list.map(s=>'<article class="salon"><span class="pill">APPROVED SALON</span><h3>'+safe(s.salonName||"Salon")+'</h3><p>'+safe(s.city||"")+'</p><p>'+safe(s.address||"Address not provided")+'</p>'+(s.phone?'<p>Mobile: '+safe(s.phone)+'</p><a href="tel:'+safe(s.phone)+'">Call salon</a>':'')+'</article>').join("");
+el("salons").innerHTML=list.map(s=>'<article class="salon" onclick="openSalon(\''+s.id+'\')" style="cursor:pointer"><span class="pill">APPROVED SALON</span><h3>'+safe(s.salonName||"Salon")+'</h3><p>'+safe(s.city||"")+'</p><p>'+safe(s.address||"Address not provided")+'</p></article>').join("");
 el("message").textContent=list.length?list.length+" approved salon(s) mile.":"Is area mein abhi koi approved salon nahi mila.";
 }
-async function loadSalons(){
+function openSalon(id){
+  const s=allSalons.find(x=>x.id===id);
+  if(!s)return;
+  el("salonProfile").style.display="block";
+  el("salonProfile").innerHTML=
+    '<button class="secondary" onclick="el(\'salonProfile\').style.display=\'none\'">← Back</button>'+
+    '<h2>'+safe(s.salonName||"Salon")+'</h2>'+
+    '<p>'+safe(s.city||"")+'</p>'+
+    '<p>'+safe(s.address||"Address not provided")+'</p>'+
+    '<p>Mobile: '+safe(s.phone||"Not provided")+'</p>';
+  el("salonProfile").scrollIntoView({behavior:"smooth"});
+}
+  async function loadSalons(){
 el("message").textContent="Salons load ho rahe hain…";
 try{
 const snap=await db.collection("salons").where("status","==","approved").get();
