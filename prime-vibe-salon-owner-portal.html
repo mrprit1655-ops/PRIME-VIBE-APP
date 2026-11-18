@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PRIME VIBE | Salon Owner Portal</title>
+<style>
+:root{--bg:#090909;--panel:#171717;--gold:#d8b45a;--line:#39342a;--muted:#aaa}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#f7f3e9;font:16px/1.5 system-ui,Arial}
+header{padding:18px 5%;border-bottom:1px solid var(--line);color:var(--gold);font-size:24px;font-weight:900;letter-spacing:3px}
+main{max-width:760px;margin:28px auto;padding:0 16px 60px}.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px;margin:16px 0}
+h1,h2{color:var(--gold)}label{display:block;font-size:14px;color:#ddd;margin-top:10px}
+input,textarea{width:100%;padding:13px;margin:6px 0;background:#090909;color:white;border:1px solid #514a3b;border-radius:9px;font:inherit}
+button{padding:12px 16px;background:var(--gold);border:0;border-radius:9px;font-weight:800;margin:8px 8px 0 0;cursor:pointer}
+button.alt{background:transparent;border:1px solid var(--gold);color:var(--gold)}
+.note{padding:12px;border:1px solid #69552b;border-radius:9px;background:#211b0d;color:#f0dca8;margin:12px 0}
+.small{color:var(--muted);font-size:14px}.hidden{display:none!important}.application{border:1px solid var(--line);padding:14px;border-radius:10px;margin:12px 0;overflow-wrap:anywhere}
+</style></head>
+<body>
+<header>PRIME VIBE <span style="font-size:11px;letter-spacing:1px;color:#eee">SALON OWNER PORTAL</span></header>
+<main>
+<h1>Salon Owner Portal</h1>
+<p class="small">Salon register karein. Application approve hone ke baad hi salon platform par active hoga.</p>
+<div id="authCard" class="card">
+<div><button onclick="tab('register')">New Salon Registration</button><button class="alt" onclick="tab('login')">Login</button></div>
+<section id="register">
+<h2>Apply for your salon</h2>
+<label>Salon name</label><input id="salonName" placeholder="Salon name">
+<label>Owner full name</label><input id="ownerName" placeholder="Your full name">
+<label>Mobile number</label><input id="phone" maxlength="10" inputmode="numeric" placeholder="10-digit mobile">
+<label>City / Area</label><input id="city" placeholder="City and area">
+<label>Full salon address</label><textarea id="address" rows="2" placeholder="Shop number, street, area"></textarea>
+<label>Email</label><input id="regEmail" type="email" placeholder="Email address">
+<label>Password (minimum 6 characters)</label><input id="regPassword" type="password" placeholder="Create password">
+<button onclick="register()">Submit Application</button>
+</section>
+<section id="login" class="hidden">
+<h2>Login</h2>
+<label>Email</label><input id="email" type="email" placeholder="Email address">
+<label>Password</label><input id="password" type="password" placeholder="Password">
+<button onclick="login()">Login</button>
+</section>
+<div id="msg" class="note hidden"></div>
+</div>
+<div id="account" class="card hidden">
+<button class="alt" onclick="logout()">Logout</button><h2 id="accountTitle">Account</h2>
+<div id="status" class="note"></div>
+<div id="ownerPanel" class="hidden"><h2>Pending applications</h2><div id="apps">Loading…</div></div>
+</div>
+</main>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script>
+const firebaseConfig={
+ apiKey:"AIzaSyCELnbDbmhbzXzGeddpTgphhHIcnXw4F38",
+ authDomain:"prime-vibe-592ad.firebaseapp.com",
+ projectId:"prime-vibe-592ad",
+ storageBucket:"prime-vibe-592ad.firebasestorage.app",
+ messagingSenderId:"64642254870",
+ appId:"1:64642254870:web:6a464f66fada5ecd3e0d37"
+};
+firebase.initializeApp(firebaseConfig);
+const db=firebase.firestore(),auth=firebase.auth();
+const SUPER_OWNER_UID="n8IqhJKiuieyis4xHqho5k5y0KS2";
+function el(id){return document.getElementById(id)}
+function say(t){el("msg").textContent=t;el("msg").classList.remove("hidden")}
+function tab(t){el("register").classList.toggle("hidden",t!=="register");el("login").classList.toggle("hidden",t!=="login");el("msg").classList.add("hidden")}
+async function register(){
+ const salonName=el("salonName").value.trim(),ownerName=el("ownerName").value.trim(),phone=el("phone").value.trim(),city=el("city").value.trim(),address=el("address").value.trim(),email=el("regEmail").value.trim(),password=el("regPassword").value;
+ if(!salonName||!ownerName||!/^[0-9]{10}$/.test(phone)||!city||!address||!email||password.length<6){say("Sabhi details bharein. Mobile 10 digit aur password kam se kam 6 characters ka hona chahiye.");return}
+ try{
+  const credential=await auth.createUserWithEmailAndPassword(email,password);
+  await db.collection("salonApplications").doc(credential.user.uid).set({
+   salonName,ownerName,phone,city,address,email,ownerUid:credential.user.uid,
+   status:"pending",createdAt:firebase.firestore.FieldValue.serverTimestamp()
+  });
+  await showAccount(credential.user);
+ }catch(e){say("Registration nahi ho paya: "+e.message)}
+}
+async function login(){
+ const email=el("email").value.trim(),password=el("password").value;
+ if(!email||!password){say("Email aur password bharein.");return}
+ try{const c=await auth.signInWithEmailAndPassword(email,password);await showAccount(c.user)}
+ catch(e){say("Login nahi hua: "+e.message)}
+}
+async function logout(){await auth.signOut();el("account").classList.add("hidden");el("authCard").classList.remove("hidden");tab("login")}
+async function showAccount(user){
+ el("authCard").classList.add("hidden");el("account").classList.remove("hidden");
+ el("accountTitle").textContent="Logged in: "+(user.email||"Account");
+ if(user.uid===SUPER_OWNER_UID){
+  el("status").textContent="Super Owner access. Aap salon applications approve ya reject kar sakte hain.";
+  el("ownerPanel").classList.remove("hidden");await loadApps();return;
+ }
+ el("ownerPanel").classList.add("hidden");
+ try{const d=await db.collection("salonApplications").doc(user.uid).get();
+  if(!d.exists){el("status").textContent="Application record nahi mila.";return}
+  const a=d.data();el("status").textContent="Salon: "+a.salonName+" | Status: "+String(a.status).toUpperCase()+". Approval se pehle salon public nahi hoga.";
+ }catch(e){el("status").textContent="Status load nahi hua: "+e.message}
+}
+async function loadApps(){
+ el("apps").textContent="Loading…";
+ try{
+  const snap=await db.collection("salonApplications").where("status","==","pending").get();
+  el("apps").innerHTML="";
+  if(snap.empty){el("apps").textContent="Koi pending application nahi hai.";return}
+  snap.forEach(doc=>{
+   const a=doc.data(),card=document.createElement("div");card.className="application";
+   const info=document.createElement("p");info.textContent=[a.salonName,a.ownerName,a.phone,a.city,a.address,a.email].join(" | ");
+   const approve=document.createElement("button");approve.textContent="Approve";
+   approve.onclick=()=>review(doc.id,a,true);
+   const reject=document.createElement("button");reject.textContent="Reject";reject.className="alt";
+   reject.onclick=()=>review(doc.id,a,false);
+   card.append(info,approve,reject);el("apps").append(card);
+  });
+ }catch(e){el("apps").textContent="Applications load nahi hui: "+e.message}
+}
+async function review(uid,a,approved){
+ if(auth.currentUser?.uid!==SUPER_OWNER_UID){alert("Only Super Owner can approve.");return}
+ try{
+  const batch=db.batch(),appRef=db.collection("salonApplications").doc(uid);
+  if(approved){
+   batch.set(db.collection("salons").doc(uid),{
+    salonId:uid,salonName:a.salonName,city:a.city,address:a.address,
+    ownerUid:uid,status:"approved",createdAt:firebase.firestore.FieldValue.serverTimestamp()
+   });
+   batch.set(db.collection("salonStaff").doc(uid),{userUid:uid,salonId:uid,role:"salonAdmin",active:true});
+   batch.update(appRef,{status:"approved",reviewedAt:firebase.firestore.FieldValue.serverTimestamp()});
+  }else{
+   batch.update(appRef,{status:"rejected",reviewedAt:firebase.firestore.FieldValue.serverTimestamp()});
+  }
+  await batch.commit();await loadApps();
+ }catch(e){alert("Approval action nahi hui: "+e.message)}
+}
+auth.onAuthStateChanged(user=>{if(user)showAccount(user)});
+</script></body></html>
