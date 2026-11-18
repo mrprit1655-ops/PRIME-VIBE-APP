@@ -149,9 +149,9 @@ async function saveProfile(){
   });
   el("profileBio").textContent=bio||"Salon Bio";
   el("profileAddress").textContent=address;
-  say("Salon Profile successfully updated!");
+  el("status").textContent="Salon Profile successfully updated!";
  }catch(e){
-  say("Profile save nahi hua: "+e.message);
+  el("status").textContent="Salon Profile save nahi hua: "+e.message;
  }
 }
   async function loadApps(){
