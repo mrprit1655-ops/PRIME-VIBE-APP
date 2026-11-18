@@ -92,6 +92,7 @@ document.getElementById("loginBox").classList.add("hidden");
 document.getElementById("panel").classList.remove("hidden");
 document.getElementById("welcome").textContent="Logged in: "+user.email;
 loadAll();
+loadBookingActions();
 }else{
 document.getElementById("loginBox").classList.remove("hidden");
 document.getElementById("panel").classList.add("hidden");
@@ -144,6 +145,76 @@ showCollection("orders","orders");
 showCollection("services","services");
 showCollection("products","products");
 }
+
+async function loadBookingActions(){
+  let old=document.getElementById("bookingActions");
+  if(old) old.remove();
+
+  let section=document.createElement("div");
+  section.id="bookingActions";
+  section.className="card";
+  section.innerHTML="<h2>Booking Management</h2><p>Loading...</p>";
+
+  document.querySelector("main").appendChild(section);
+
+  try{
+    let snap=await db.collection("appointments").get();
+    section.innerHTML="<h2>Booking Management</h2>";
+
+    if(snap.empty){
+      section.innerHTML+="<p>No bookings found.</p>";
+      return;
+    }
+
+    snap.forEach(doc=>{
+      let data=doc.data();
+      let item=document.createElement("div");
+      item.className="item";
+
+      let title=document.createElement("strong");
+      title.textContent=(data.customerName || "Customer")+" - "+(data.serviceName || "Service");
+      item.appendChild(title);
+
+      let status=document.createElement("p");
+      status.textContent="Status: "+(data.status || "pending");
+      item.appendChild(status);
+
+      if((data.status || "pending")==="pending"){
+        let confirm=document.createElement("button");
+        confirm.textContent="Confirm Booking";
+        confirm.onclick=async()=>{
+          try{
+            await db.collection("appointments").doc(doc.id).update({status:"confirmed"});
+            alert("Booking Confirmed");
+            loadBookingActions();
+            loadAll();
+          }catch(e){alert(e.message);}
+        };
+
+        let cancel=document.createElement("button");
+        cancel.textContent="Cancel Booking";
+        cancel.style.marginLeft="8px";
+        cancel.onclick=async()=>{
+          try{
+            await db.collection("appointments").doc(doc.id).update({status:"cancelled"});
+            alert("Booking Cancelled");
+            loadBookingActions();
+            loadAll();
+          }catch(e){alert(e.message);}
+        };
+
+        item.appendChild(confirm);
+        item.appendChild(cancel);
+      }
+
+      section.appendChild(item);
+    });
+  }catch(e){
+    section.innerHTML+="<p>Error: "+e.message+"</p>";
+  }
+}
+
+
   
 </script>
 </body>
