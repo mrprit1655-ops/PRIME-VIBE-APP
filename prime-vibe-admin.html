@@ -56,6 +56,10 @@ button{padding:12px 18px;margin:6px 4px 6px 0;background:#d8b45a;border:0;border
 <div id="products">Loading...</div>
 </div>
 </div>
+<div class="card">
+  <h2>Salon Applications</h2>
+  <div id="applications">Loading...</div>
+</div>
 </main>
 
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
@@ -144,8 +148,30 @@ showCollection("appointments","appointments");
 showCollection("orders","orders");
 showCollection("services","services");
 showCollection("products","products");
+loadApplications();
 }
-
+async function loadApplications(){
+  const box=document.getElementById("applications");
+  box.textContent="Loading...";
+  try{
+    const snap=await db.collection("salonApplications").get();
+    box.innerHTML="";
+    if(snap.empty){
+      box.textContent="Koi application nahi hai.";
+      return;
+    }
+    snap.forEach(doc=>{
+      const data=doc.data();
+      const item=document.createElement("div");
+      item.className="item";
+      item.textContent=JSON.stringify(data);
+      box.appendChild(item);
+    });
+  }catch(e){
+    box.textContent="Error: "+e.message;
+  }
+}
+  
 async function loadBookingActions(){
   let old=document.getElementById("bookingActions");
   if(old) old.remove();
