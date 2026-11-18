@@ -106,22 +106,36 @@ return String(v);
 }
 
 async function showCollection(name,target){
-let box=document.getElementById(target);
-box.textContent="Loading...";
-try{
-let snap=await db.collection(name).get();
-box.innerHTML="";
-if(snap.empty){box.textContent="Abhi koi record nahi hai.";return}
-snap.forEach(doc=>{
-let data=doc.data();
-let div=document.createElement("div");
-div.className="item";
-div.textContent=doc.id+" | "+Object.entries(data).map(([k,v])=>k+": "+safe(v)).join(" | ");
-box.appendChild(div);
-});
-}catch(e){
-box.textContent="Data load nahi hua: "+e.message;
-}
+  let box=document.getElementById(target);
+  box.textContent="Loading...";
+  try{
+    let snap=await db.collection(name).get();
+    box.innerHTML="";
+    if(snap.empty){
+      box.textContent="Abhi koi record nahi hai.";
+      return;
+    }
+    snap.forEach(doc=>{
+      let data=doc.data();
+      let card=document.createElement("div");
+      card.className="item";
+
+      let title=document.createElement("strong");
+      title.textContent="ID: "+doc.id;
+      card.appendChild(title);
+
+      Object.entries(data).forEach(([key,value])=>{
+        let line=document.createElement("div");
+        line.style.marginTop="8px";
+        line.textContent=key+": "+safe(value);
+        card.appendChild(line);
+      });
+
+      box.appendChild(card);
+    });
+  }catch(e){
+    box.textContent="Data load nahi hua: "+e.message;
+  }
 }
 
 function loadAll(){
