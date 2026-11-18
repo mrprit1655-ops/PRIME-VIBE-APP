@@ -55,6 +55,14 @@ button.alt{background:transparent;border:1px solid var(--gold);color:var(--gold)
     <p>Followers: <span id="profileFollowers">0</span></p>
     <p>Rating: <span id="profileRating">0</span> ⭐</p>
     <p>Reviews: <span id="profileReviews">0</span></p>
+ <h3>Edit Salon Profile</h3>
+<label>Salon Bio</label>
+<textarea id="editBio" placeholder="Salon ke bare mein likhein"></textarea>
+<label>Salon Address</label>
+<textarea id="editAddress" placeholder="Salon ka pura address"></textarea>
+<label>Mobile Number</label>
+<input id="editPhone" type="tel" maxlength="10" placeholder="Mobile number">
+<button onclick="saveProfile()">Save Profile</button>
   </div>
 </div>
 </div>
@@ -115,12 +123,38 @@ async function showAccount(user){
   el("profileOwnerName").textContent="Owner: "+(a.ownerName||"");
   el("profileAddress").textContent=s.address||a.address||"";
   el("profileBio").textContent=s.bio||"Salon Bio";
-  el("salonDashboard").classList.remove("hidden");
+ el("editBio").value=s.bio||"";
+el("editAddress").value=s.address||a.address||"";
+el("editPhone").value=s.phone||a.phone||"";
+   el("salonDashboard").classList.remove("hidden");
  }
 }
  }catch(e){el("status").textContent="Status load nahi hua: "+e.message}
 }
-async function loadApps(){
+async function saveProfile(){
+ const user=auth.currentUser;
+ if(!user){say("Please login first.");return;}
+ const bio=el("editBio").value.trim();
+ const address=el("editAddress").value.trim();
+ const phone=el("editPhone").value.trim();
+ if(phone && !/^[0-9]{10}$/.test(phone)){
+  say("Sahi 10 digit mobile number dalein.");return;
+ }
+ try{
+  await db.collection("salons").doc(user.uid).update({
+   bio:bio,address:address,phone:phone
+  });
+  await db.collection("salonApplications").doc(user.uid).update({
+   address:address,phone:phone
+  });
+  el("profileBio").textContent=bio||"Salon Bio";
+  el("profileAddress").textContent=address;
+  say("Salon Profile successfully updated!");
+ }catch(e){
+  say("Profile save nahi hua: "+e.message);
+ }
+}
+  async function loadApps(){
  el("apps").textContent="Loading…";
  try{
   const snap=await db.collection("salonApplications").where("status","==","pending").get();
