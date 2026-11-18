@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PRIME VIBE Admin Panel</title>
+<style>
+body{margin:0;background:#090909;color:#fff;font:16px Arial}
+header{padding:22px;color:#d8b45a;font-size:26px;font-weight:bold}
+main{padding:16px;max-width:800px;margin:auto}
+.card{background:#171717;border:1px solid #51452c;border-radius:14px;padding:16px;margin:15px 0}
+h2{color:#d8b45a}
+input{box-sizing:border-box;width:100%;padding:13px;margin:8px 0;background:#090909;color:white;border:1px solid #555;border-radius:8px}
+button{padding:12px 18px;margin:6px 4px 6px 0;background:#d8b45a;border:0;border-radius:8px;font-weight:bold}
+.item{padding:12px;border-bottom:1px solid #444;overflow-wrap:anywhere}
+.muted{color:#bbb}
+.hidden{display:none}
+</style>
+</head>
+<body>
+<header>PRIME VIBE <small>ADMIN PANEL</small></header>
+<main>
+<div class="card" id="loginBox">
+<h2>Super Owner Login</h2>
+<input id="email" type="email" placeholder="Email">
+<input id="password" type="password" placeholder="Password">
+<button onclick="login()">Login</button>
+<p id="msg" class="muted"></p>
+</div>
+
+<div id="panel" class="hidden">
+<div class="card">
+<h2>Super Owner Dashboard</h2>
+<p id="welcome"></p>
+<button onclick="loadAll()">Refresh Data</button>
+<button onclick="logout()">Logout</button>
+</div>
+
+<div class="card">
+<h2>Appointments / Bookings</h2>
+<div id="appointments">Loading...</div>
+</div>
+
+<div class="card">
+<h2>Customer Orders</h2>
+<div id="orders">Loading...</div>
+</div>
+
+<div class="card">
+<h2>Services</h2>
+<div id="services">Loading...</div>
+</div>
+
+<div class="card">
+<h2>Products</h2>
+<div id="products">Loading...</div>
+</div>
+</div>
+</main>
+
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+<script>
+const firebaseConfig={
+apiKey:"AIzaSyCELnbDbmhbzXzGeddpTgphhHIcnXw4F38",
+authDomain:"prime-vibe-592ad.firebaseapp.com",
+projectId:"prime-vibe-592ad",
+storageBucket:"prime-vibe-592ad.firebasestorage.app",
+messagingSenderId:"64642254870",
+appId:"1:64642254870:web:6a464f66fada5ecd3e0d37"
+};
+
+firebase.initializeApp(firebaseConfig);
+const auth=firebase.auth();
+const db=firebase.firestore();
+const OWNER_UID="n8IqhJKiuieyis4xHqho5k5y0KS2";
+
+function login(){
+let e=document.getElementById("email").value.trim();
+let p=document.getElementById("password").value;
+auth.signInWithEmailAndPassword(e,p).catch(err=>{
+document.getElementById("msg").textContent=err.message;
+});
+}
+
+function logout(){auth.signOut()}
+
+auth.onAuthStateChanged(user=>{
+if(user && user.uid===OWNER_UID){
+document.getElementById("loginBox").classList.add("hidden");
+document.getElementById("panel").classList.remove("hidden");
+document.getElementById("welcome").textContent="Logged in: "+user.email;
+loadAll();
+}else{
+document.getElementById("loginBox").classList.remove("hidden");
+document.getElementById("panel").classList.add("hidden");
+if(user)document.getElementById("msg").textContent="Access denied.";
+}
+});
+
+function safe(v){
+if(v===null || v===undefined)return "";
+if(typeof v==="object")return JSON.stringify(v);
+return String(v);
+}
+
+async function showCollection(name,target){
+let box=document.getElementById(target);
+box.textContent="Loading...";
+try{
+let snap=await db.collection(name).get();
+box.innerHTML="";
+if(snap.empty){box.textContent="Abhi koi record nahi hai.";return}
+snap.forEach(doc=>{
+let data=doc.data();
+let div=document.createElement("div");
+div.className="item";
+div.textContent=doc.id+" | "+Object.entries(data).map(([k,v])=>k+": "+safe(v)).join(" | ");
+box.appendChild(div);
+});
+}catch(e){
+box.textContent="Data load nahi hua: "+e.message;
+}
+}
+
+function loadAll(){
+showCollection("appointments","appointments");
+showCollection("orders","orders");
+showCollection("services","services");
+showCollection("products","products");
+}
+</script>
+</body>
+</html>
