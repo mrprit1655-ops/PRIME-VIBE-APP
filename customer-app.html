@@ -117,6 +117,7 @@ let customerRecaptcha = null;
 
 async function sendCustomerOTP() {
   const phone = el("customerPhone").value.trim();
+  alert("OTP button clicked");
   const msg = el("loginMessage");
 
   if (!/^[6-9]\d{9}$/.test(phone)) {
