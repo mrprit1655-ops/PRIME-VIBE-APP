@@ -1,0 +1,188 @@
+
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PRIME VIBE | Salon Profile</title>
+<style>
+:root{--bg:#090909;--panel:#171717;--gold:#d8b45a;--line:#39342a;--muted:#aaa}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:#f7f3e9;font:16px/1.6 system-ui,Arial}
+header{padding:18px 5%;border-bottom:1px solid var(--line)}
+.brand{font-size:25px;font-weight:900;letter-spacing:3px;color:var(--gold)}
+main{max-width:850px;margin:auto;padding:20px 5% 60px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:17px;padding:20px;margin:16px 0}
+h1,h2{color:var(--gold)}
+h1{font-size:29px}
+h2{font-size:23px}
+.muted{color:var(--muted)}
+button{padding:12px 17px;background:var(--gold);color:#111;border:0;border-radius:9px;font-weight:800;cursor:pointer}
+.secondary{background:transparent;border:1px solid var(--gold);color:var(--gold)}
+.item{padding:13px 0;border-bottom:1px solid var(--line)}
+.item:last-child{border:0}
+.price{color:var(--gold);font-weight:800;float:right}
+.notice{padding:13px;background:#211b0d;border:1px solid #69552b;border-radius:9px;color:#f0dca8}
+.pill{color:var(--gold);border:1px solid var(--line);border-radius:99px;padding:4px 10px;font-size:12px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">PRIME VIBE</div>
+  <small>SALON PROFILE</small>
+</header>
+
+<main>
+  <button class="secondary" onclick="location.href='customer-app.html'">← Back to Salons</button>
+
+  <div id="message" class="notice">Salon profile load ho rahi hai...</div>
+
+  <section class="card" id="profile" style="display:none">
+    <span class="pill">APPROVED SALON</span>
+    <h1 id="salonName">Salon</h1>
+    <p id="city" class="muted"></p>
+    <p id="bio"></p>
+    <p><b>Address:</b> <span id="address"></span></p>
+    <p><b>Mobile:</b> <span id="phone"></span></p>
+    <p><b>Followers:</b> <span id="followers">0</span></p>
+    <p><b>Rating:</b> <span id="rating">0</span> ⭐</p>
+    <p><b>Reviews:</b> <span id="reviews">0</span></p>
+  </section>
+
+  <section class="card">
+    <h2>Services & Price List</h2>
+    <div id="services" class="muted">Services load ho rahi hain...</div>
+  </section>
+
+  <section class="card">
+    <h2>Products</h2>
+    <div id="products" class="muted">Products load ho rahe hain...</div>
+  </section>
+
+  <section class="card">
+    <h2>Follow & Customer Reviews</h2>
+    <p class="muted">Follow, rating aur review ki suvidha jald aa rahi hai.</p>
+  </section>
+
+  <section class="card">
+    <h2>Booking</h2>
+    <p class="muted">Is salon ki booking karne ke liye Customer App par jaayein.</p>
+    <button onclick="location.href='customer-app.html'">Open Customer App</button>
+  </section>
+</main>
+
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+
+<script>
+const firebaseConfig={
+  apiKey:"AIzaSyCELnbDbmhbzXzGeddpTgphhHIcnxW4f38",
+  authDomain:"prime-vibe-592ad.firebaseapp.com",
+  projectId:"prime-vibe-592ad",
+  storageBucket:"prime-vibe-592ad.firebasestorage.app",
+  messagingSenderId:"64642254870",
+  appId:"1:64642254870:web:6a464f66fada5ecd3e0d37"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db=firebase.firestore();
+
+const el=id=>document.getElementById(id);
+const params=new URLSearchParams(location.search);
+const salonId=params.get("id");
+
+function safe(v){
+  return String(v??"").replace(/[&<>"']/g,c=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[c]));
+}
+
+async function loadProfile(){
+  if(!salonId){
+    el("message").textContent="Salon ID nahi mila. Customer App se salon kholein.";
+    return;
+  }
+
+  try{
+    const doc=await db.collection("salons").doc(salonId).get();
+
+    if(!doc.exists || doc.data().status!=="approved"){
+      el("message").textContent="Yeh salon available nahi hai.";
+      return;
+    }
+
+    const s=doc.data();
+    el("profile").style.display="block";
+    el("message").style.display="none";
+
+    el("salonName").textContent=s.salonName||"Salon";
+    el("city").textContent=s.city||"";
+    el("bio").textContent=s.bio||"Salon details available nahi hain.";
+    el("address").textContent=s.address||"Not provided";
+    el("phone").textContent=s.phone||"Not provided";
+    el("followers").textContent=Number(s.followers||0);
+    el("rating").textContent=Number(s.rating||0);
+    el("reviews").textContent=Number(s.reviewCount||0);
+
+    loadServices();
+    loadProducts();
+
+  }catch(error){
+    el("message").textContent="Profile load nahi hui: "+error.message;
+  }
+}
+
+async function loadServices(){
+  const box=el("services");
+  try{
+    const snap=await db.collection("services")
+      .where("salonId","==",salonId).get();
+
+    if(snap.empty){
+      box.textContent="Abhi services add nahi ki gayi hain.";
+      return;
+    }
+
+    box.innerHTML=snap.docs.map(d=>{
+      const x=d.data();
+      return `<div class="item">
+        <b>${safe(x.name||x.serviceName||d.id)}</b>
+        <span class="price">₹${safe(x.price??"—")}</span>
+      </div>`;
+    }).join("");
+
+  }catch(e){
+    box.textContent="Services load nahi hui: "+e.message;
+  }
+}
+
+async function loadProducts(){
+  const box=el("products");
+  try{
+    const snap=await db.collection("products").get();
+    const list=snap.docs.filter(d=>d.data().salonId===salonId);
+
+    if(!list.length){
+      box.textContent="Is salon ke products abhi available nahi hain.";
+      return;
+    }
+
+    box.innerHTML=list.map(d=>{
+      const x=d.data();
+      return `<div class="item">
+        <b>${safe(x.name||d.id)}</b>
+        <span class="price">₹${safe(x.price??"—")}</span>
+        <p class="muted">${safe(x.description||"")}</p>
+      </div>`;
+    }).join("");
+
+  }catch(e){
+    box.textContent="Products load nahi hue: "+e.message;
+  }
+}
+
+loadProfile();
+</script>
+</body>
+</html>
