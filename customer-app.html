@@ -25,6 +25,30 @@ a{color:var(--gold)}
 <body>
 <header><div class="brand">PRIME VIBE</div><small>SALON DISCOVERY</small></header>
 <main>
+  <section class="card" id="customerLogin">
+  <h2>Customer Login</h2>
+  <p class="muted">Apne mobile number se login karein.</p>
+
+  <label>Mobile Number</label>
+  <div style="display:flex;gap:8px">
+    <input value="+91" readonly style="width:75px">
+    <input id="customerPhone" type="tel"
+      maxlength="10" placeholder="10 digit mobile number">
+  </div>
+
+  <div id="recaptcha-container"></div>
+
+  <button onclick="sendCustomerOTP()">Send OTP</button>
+
+  <div id="otpSection" style="display:none">
+    <label>Enter OTP</label>
+    <input id="customerOTP" type="number"
+      placeholder="6 digit OTP">
+    <button onclick="verifyCustomerOTP()">Verify OTP</button>
+  </div>
+
+  <p id="loginMessage" class="notice"></p>
+</section>
 <section class="card"><h1>Find your perfect salon.</h1>
 <p class="muted">Apne area ke approved salons dekhein.</p></section>
 <section class="card"><h2>Salons near you</h2>
@@ -88,6 +112,69 @@ allSalons=snap.docs.map(d=>({id:d.id,...d.data()}));render();
 }
 function clearFilter(){el("city").value="";render()}
 loadSalons();
+let customerConfirmation = null;
+let customerRecaptcha = null;
+
+async function sendCustomerOTP() {
+  const phone = el("customerPhone").value.trim();
+  const msg = el("loginMessage");
+
+  if (!/^[6-9]\d{9}$/.test(phone)) {
+    msg.textContent = "Sahi 10 digit mobile number dalein.";
+    return;
+  }
+
+  try {
+    msg.textContent = "OTP bheja ja raha hai...";
+
+    if (!customerRecaptcha) {
+      customerRecaptcha = new firebase.auth.RecaptchaVerifier(
+        "recaptcha-container",
+        { size: "normal" }
+      );
+      await customerRecaptcha.render();
+    }
+
+    customerConfirmation = await firebase.auth()
+      .signInWithPhoneNumber("+91" + phone, customerRecaptcha);
+
+    el("otpSection").style.display = "block";
+    msg.textContent = "OTP bhej diya gaya hai.";
+  } catch (error) {
+    msg.textContent = "Error: " + error.message;
+
+    if (customerRecaptcha) {
+      customerRecaptcha.clear();
+      customerRecaptcha = null;
+    }
+  }
+}
+
+async function verifyCustomerOTP() {
+  const otp = el("customerOTP").value.trim();
+  const msg = el("loginMessage");
+
+  if (!customerConfirmation) {
+    msg.textContent = "Pehle Send OTP karein.";
+    return;
+  }
+
+  if (!/^\d{6}$/.test(otp)) {
+    msg.textContent = "6 digit OTP dalein.";
+    return;
+  }
+
+  try {
+    msg.textContent = "OTP verify ho raha hai...";
+
+    const result = await customerConfirmation.confirm(otp);
+
+    msg.textContent = "Login successful! Welcome to PRIME VIBE.";
+
+    console.log("Customer UID:", result.user.uid);
+  } catch (error) {
+    msg.textContent = "OTP galat hai ya expire ho gaya hai.";
+  }
 </script>
 </body>
 </html>
